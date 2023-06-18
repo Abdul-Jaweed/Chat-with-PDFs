@@ -1,1 +1,1 @@
-# Chat-with-PDFs
+# Chat with PDFs
