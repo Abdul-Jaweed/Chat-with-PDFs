@@ -9,6 +9,9 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
+import os
+from langchain import OpenAI
+
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -67,6 +70,8 @@ def main():
     load_dotenv()
     st.set_page_config(page_title="Chat with PDF", page_icon=":books:")
     st.write(css, unsafe_allow_html=True)
+    
+    
 
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
@@ -79,6 +84,10 @@ def main():
         handle_userinput(user_question)
 
     with st.sidebar:
+        st.subheader(":red[Enter your OpenAI API key]")
+        user_api_key = st.text_input(":blue[Your API KEY]", type="password", key="api_key_input")
+        if st.button("Enter"):
+            os.environ["OPENAI_API_KEY"] = user_api_key
         st.subheader(":red[Your PDFs]")
         pdf_docs = st.file_uploader(":blue[Upload your PDFs]", accept_multiple_files=True)
         if st.button("Process PDF"):
